@@ -29,9 +29,9 @@ public class GamesActivity extends ActionBarActivity {
         final ListView gamesListView = (ListView) findViewById(R.id.games_list);
         final GamesArrayAdapter adapter = new GamesArrayAdapter(this);
         gamesListView.setAdapter(adapter);
-        adapter.add(Game.of(Game.Type.HANCHAN, new Date(), "foo", "bar", "sig", "mik"));
-        adapter.add(Game.of(Game.Type.HANCHAN, new Date(), "ang", "bid", "pel", "ala"));
-        adapter.add(Game.of(Game.Type.TONPUUSEN, new Date(), "inu", "emm", "mai", "dan"));
+        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
+        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
+        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
     }
 
 
@@ -90,8 +90,6 @@ private final Context context;
         public View getView(int position, View convertView, ViewGroup parent) {
             final Game item = getItem(position);
             final View itemView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false);
-            ((ImageView)itemView.findViewById(R.id.south_round_icon)).setVisibility(item.gameType == Game.Type.HANCHAN ? View.VISIBLE : View.INVISIBLE);
-            ((TextView)itemView.findViewById(R.id.game_type_label)).setText(item.gameType == Game.Type.HANCHAN ? "Hanchan" : "Tonpuusen");
             ((TextView)itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
             ((TextView)itemView.findViewById(R.id.player_1_name)).setText(item.player1);
             ((TextView)itemView.findViewById(R.id.player_2_name)).setText(item.player2);
