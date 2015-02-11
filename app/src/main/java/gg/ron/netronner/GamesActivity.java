@@ -1,5 +1,6 @@
 package gg.ron.netronner;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class GamesActivity extends ActionBarActivity {
+public class GamesActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
