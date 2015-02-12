@@ -2,20 +2,17 @@ package gg.ron.netronner;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -56,7 +53,7 @@ public class GamesActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_new_game) {
-            Toast.makeText(this,"new game", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, NewGame.class));
             return true;
         }
 
@@ -65,8 +62,9 @@ public class GamesActivity extends Activity {
 
     public static class GamesArrayAdapter extends BaseAdapter {
 
-private final Context context;
+        private final Context context;
         private final List<Game> games;
+
         public GamesArrayAdapter(Context context) {
             this.context = context;
             this.games = new ArrayList<>();
@@ -87,7 +85,7 @@ private final Context context;
             return position;
         }
 
-        public void add(Game game){
+        public void add(Game game) {
             this.games.add(game);
             notifyDataSetChanged();
         }
@@ -96,11 +94,11 @@ private final Context context;
         public View getView(int position, View convertView, ViewGroup parent) {
             final Game item = getItem(position);
             final View itemView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false);
-            ((TextView)itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
-            ((TextView)itemView.findViewById(R.id.player_1_name)).setText(item.player1);
-            ((TextView)itemView.findViewById(R.id.player_2_name)).setText(item.player2);
-            ((TextView)itemView.findViewById(R.id.player_3_name)).setText(item.player3);
-            ((TextView)itemView.findViewById(R.id.player_4_name)).setText(item.player4);
+            ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
+            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.player1);
+            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.player2);
+            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.player3);
+            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.player4);
             return itemView;
         }
 

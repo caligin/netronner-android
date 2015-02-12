@@ -10,11 +10,19 @@
         <activity
             android:name=".GamesActivity"
             android:label="@string/title_activity_games" >
-            <intent-filter android:label="@string/app_name">
+            <intent-filter android:label="@string/app_name" >
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".NewGame"
+            android:label="@string/title_activity_new_game"
+            android:parentActivityName=".GamesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gg.ron.netronner.GamesActivity" />
         </activity>
     </application>
 
