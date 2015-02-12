@@ -34,6 +34,15 @@ public class GamesActivity extends Activity {
         adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
         adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
         adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
+        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
+        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
+        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
+        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
+        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
+        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
+        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
+        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
+        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
     }
 
 
