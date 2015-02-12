@@ -93,7 +93,9 @@ public class GamesActivity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             final Game item = getItem(position);
-            final View itemView = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false);
+            final View itemView = (RelativeLayout) convertView == null
+                    ? LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false)
+                    :(RelativeLayout) convertView;
             ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
             ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.player1);
             ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.player2);
