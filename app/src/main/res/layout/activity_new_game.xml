@@ -12,7 +12,6 @@
     tools:context="gg.ron.netronner.NewGame">
 
     <LinearLayout
-        android:id="@+id/new_player_east"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -24,6 +23,7 @@
             android:src="@drawable/wind_east" />
 
         <EditText
+            android:id="@+id/new_player_east"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -31,7 +31,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/new_player_west"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -43,6 +42,7 @@
             android:src="@drawable/wind_south" />
 
         <EditText
+            android:id="@+id/new_player_west"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -50,7 +50,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/new_player_south"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -62,6 +61,7 @@
             android:src="@drawable/wind_west" />
 
         <EditText
+            android:id="@+id/new_player_south"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -69,7 +69,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/new_player_north"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
@@ -81,6 +80,7 @@
             android:src="@drawable/wind_north" />
 
         <EditText
+            android:id="@+id/new_player_north"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -93,6 +93,7 @@
         android:layout_weight="1">
 
         <Button
+            android:id="@+id/button_create_new_game"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/button_create_new_game"

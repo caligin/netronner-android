@@ -5,21 +5,20 @@ import java.util.Date;
 public class Game {
 
     public Date started;
-    public String player1;
-    public String player2;
-    public String player3;
-    public String player4;
+    public String eastPlayer;
+    public String southPlayer;
+    public String westPlayer;
+    public String northPlayer;
 
-    public static Game of(Date started, String player1, String player2, String player3, String player4) {
+    public static Game of(Date started, String eastPlayer, String southPlayer, String westPlayer, String northPlayer) {
         final Game g = new Game();
         g.started = started;
-        g.player1 = player1;
-        g.player2 = player2;
-        g.player3 = player3;
-        g.player4 = player4;
+        g.eastPlayer = eastPlayer;
+        g.southPlayer = southPlayer;
+        g.westPlayer = westPlayer;
+        g.northPlayer = northPlayer;
         return g;
     }
-
 
 
 }

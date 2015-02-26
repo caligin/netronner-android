@@ -3,6 +3,7 @@ package gg.ron.netronner;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,8 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -60,6 +63,64 @@ public class GamesActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+//    public static class GamesCursorAdapter extends SimpleCursorAdapter {
+//
+//        private final Context context;
+//        private final List<Game> games;
+//
+//        public GamesCursorAdapter(Context context) {
+//            super(context, R.layout.game_list_item, null,
+//                    new String[]);
+//            this.context = context;
+//            this.games = new ArrayList<>();
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return games.size();
+//        }
+//
+//        @Override
+//        public Game getItem(int position) {
+//            return games.get(position);
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        public void add(Game game) {
+//            this.games.add(game);
+//            notifyDataSetChanged();
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            final Game item = getItem(position);
+//            final View itemView = (RelativeLayout) convertView == null
+//                    ? LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false)
+//                    :(RelativeLayout) convertView;
+//            ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
+//            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.eastPlayer);
+//            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.southPlayer);
+//            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.westPlayer);
+//            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.northPlayer);
+//            return itemView;
+//        }
+//
+//        @Override
+//        public View newView(Context context, Cursor cursor, ViewGroup parent) {
+//            return null;
+//        }
+//
+//        @Override
+//        public void bindView(View view, Context context, Cursor cursor) {
+//
+//        }
+//
+//
+//    }
     public static class GamesArrayAdapter extends BaseAdapter {
 
         private final Context context;
@@ -97,10 +158,10 @@ public class GamesActivity extends Activity {
                     ? LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false)
                     :(RelativeLayout) convertView;
             ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
-            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.player1);
-            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.player2);
-            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.player3);
-            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.player4);
+            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.eastPlayer);
+            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.southPlayer);
+            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.westPlayer);
+            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.northPlayer);
             return itemView;
         }
 
