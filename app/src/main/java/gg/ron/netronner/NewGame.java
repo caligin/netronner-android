@@ -30,21 +30,20 @@ public class NewGame extends Activity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Game g = Game.of(
-                        new Date(),
-                        eastPlayer.getText().toString(),
-                        southPlayer.getText().toString(),
-                        westPlayer.getText().toString(),
-                        northPlayer.getText().toString());
                 final GamesRepository games = new GamesRepository(NewGame.this);
                 final ContentValues values = new ContentValues(6);
-                values.put("id", g.started.getTime());
-                values.put("timestamp", g.started.getTime());
-                values.put("east", g.eastPlayer);
-                values.put("south", g.southPlayer);
-                values.put("west", g.westPlayer);
-                values.put("north", g.northPlayer);
-                games.getWritableDatabase().insert(GamesRepository.GAMES_TABLE, null, values);
+                final Date started = new Date();
+                values.put(GamesRepository.Fields._ID, started.getTime());
+                values.put(GamesRepository.Fields.timestamp, started.getTime());
+                values.put(GamesRepository.Fields.east, eastPlayer.getText().toString());
+                values.put(GamesRepository.Fields.south, southPlayer.getText().toString());
+                values.put(GamesRepository.Fields.west, westPlayer.getText().toString());
+                values.put(GamesRepository.Fields.north, northPlayer.getText().toString());
+                final long insert = games.getWritableDatabase().insert(GamesRepository.GAMES_TABLE, null, values);
+                final int LOADING_FAILURE = -1;
+                if (insert != LOADING_FAILURE) {
+                    finish();
+                }
             }
         });
     }

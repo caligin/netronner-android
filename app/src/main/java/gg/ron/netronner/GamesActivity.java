@@ -1,50 +1,49 @@
 package gg.ron.netronner;
 
 import android.app.Activity;
-import android.content.Context;
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
-public class GamesActivity extends Activity {
+public class GamesActivity
+        extends Activity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final int GAMES_LOADER_ID = 0;
+    private SimpleCursorAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_games);
         final ListView gamesListView = (ListView) findViewById(R.id.games_list);
-        final GamesArrayAdapter adapter = new GamesArrayAdapter(this);
+        adapter = new SimpleCursorAdapter(
+                this,
+                R.layout.game_list_item,
+                null,
+                new String[]{GamesRepository.Fields.timestamp, GamesRepository.Fields.east, GamesRepository.Fields.south, GamesRepository.Fields.west, GamesRepository.Fields.north},
+                new int[]{R.id.game_date_label, R.id.player_1_name, R.id.player_2_name, R.id.player_3_name, R.id.player_4_name},
+                0);
+        //todo viewbinder to convert timestamp to readable date. find a way to delegate everything else to default VB
         gamesListView.setAdapter(adapter);
-        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
-        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
-        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
-        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
-        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
-        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
-        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
-        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
-        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
-        adapter.add(Game.of(new Date(), "foo", "bar", "sig", "mik"));
-        adapter.add(Game.of(new Date(), "ang", "bid", "pel", "ala"));
-        adapter.add(Game.of(new Date(), "inu", "emm", "mai", "dan"));
+        getLoaderManager().initLoader(GAMES_LOADER_ID, null, this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!getLoaderManager().getLoader(GAMES_LOADER_ID).isStarted()) {
+            getLoaderManager().restartLoader(GAMES_LOADER_ID, null, this);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -63,108 +62,32 @@ public class GamesActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-//    public static class GamesCursorAdapter extends SimpleCursorAdapter {
-//
-//        private final Context context;
-//        private final List<Game> games;
-//
-//        public GamesCursorAdapter(Context context) {
-//            super(context, R.layout.game_list_item, null,
-//                    new String[]);
-//            this.context = context;
-//            this.games = new ArrayList<>();
-//        }
-//
-//        @Override
-//        public int getCount() {
-//            return games.size();
-//        }
-//
-//        @Override
-//        public Game getItem(int position) {
-//            return games.get(position);
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return position;
-//        }
-//
-//        public void add(Game game) {
-//            this.games.add(game);
-//            notifyDataSetChanged();
-//        }
-//
-//        @Override
-//        public View getView(int position, View convertView, ViewGroup parent) {
-//            final Game item = getItem(position);
-//            final View itemView = (RelativeLayout) convertView == null
-//                    ? LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false)
-//                    :(RelativeLayout) convertView;
-//            ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
-//            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.eastPlayer);
-//            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.southPlayer);
-//            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.westPlayer);
-//            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.northPlayer);
-//            return itemView;
-//        }
-//
-//        @Override
-//        public View newView(Context context, Cursor cursor, ViewGroup parent) {
-//            return null;
-//        }
-//
-//        @Override
-//        public void bindView(View view, Context context, Cursor cursor) {
-//
-//        }
-//
-//
-//    }
-    public static class GamesArrayAdapter extends BaseAdapter {
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
+            @Override
+            public Cursor loadInBackground() {
+                return new GamesRepository(GamesActivity.this).list();
+            }
 
-        private final Context context;
-        private final List<Game> games;
+            @Override
+            protected void onStartLoading() {
+                // won't load without this. TODO investigate, i copied from kcc without remembering why
+                super.onStartLoading();
+                if (isStarted()) {
+                    forceLoad();
+                }
+            }
+        };
+    }
 
-        public GamesArrayAdapter(Context context) {
-            this.context = context;
-            this.games = new ArrayList<>();
-        }
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        adapter.changeCursor(data);
+    }
 
-        @Override
-        public int getCount() {
-            return games.size();
-        }
-
-        @Override
-        public Game getItem(int position) {
-            return games.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public void add(Game game) {
-            this.games.add(game);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final Game item = getItem(position);
-            final View itemView = (RelativeLayout) convertView == null
-                    ? LayoutInflater.from(context).inflate(R.layout.game_list_item, parent, false)
-                    :(RelativeLayout) convertView;
-            ((TextView) itemView.findViewById(R.id.game_date_label)).setText(item.started.toString());
-            ((TextView) itemView.findViewById(R.id.player_1_name)).setText(item.eastPlayer);
-            ((TextView) itemView.findViewById(R.id.player_2_name)).setText(item.southPlayer);
-            ((TextView) itemView.findViewById(R.id.player_3_name)).setText(item.westPlayer);
-            ((TextView) itemView.findViewById(R.id.player_4_name)).setText(item.northPlayer);
-            return itemView;
-        }
-
-
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // do nothing?
     }
 }
