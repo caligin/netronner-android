@@ -63,18 +63,60 @@ public class GamesActivity
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
         return new AsyncTaskLoader<Cursor>(this) {
+            private Cursor cursor;
             @Override
             public Cursor loadInBackground() {
                 return new GamesRepository(GamesActivity.this).list();
             }
 
             @Override
+            public void deliverResult(Cursor data) {
+                if(cursor != data || isReset()) {
+                    destroyCurrentCursor();
+                }
+                if(isReset()){
+                    return;
+                }
+                cursor = data;
+                if(isStarted()){
+                    super.deliverResult(data);
+                }
+            }
+
+            @Override
             protected void onStartLoading() {
-                // won't load without this. TODO investigate, i copied from kcc without remembering why
-                super.onStartLoading();
-                if (isStarted()) {
+                if(cursor != null){
+                    deliverResult(cursor);
+                }
+                // TODO OBSERVER
+                if(takeContentChanged() || cursor == null  ) {
                     forceLoad();
+                }
+            }
+
+            @Override
+            protected void onStopLoading() {
+                cancelLoad();
+            }
+
+            @Override
+            protected void onReset() {
+                onStopLoading();
+                destroyCurrentCursor();
+                // TODO destroy the observer
+            }
+
+            @Override
+            public void onCanceled(Cursor data) {
+                destroyCurrentCursor();
+            }
+
+            private void destroyCurrentCursor(){
+                if(cursor!= null){
+                    cursor.close();
+                    cursor = null;
                 }
             }
         };
